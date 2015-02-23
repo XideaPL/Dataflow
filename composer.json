@@ -1,0 +1,29 @@
+{
+    "name": "xideapl/dataflow",
+    "type": "library",
+    "description": "Xidea Dataflow Component",
+    "keywords": [],
+    "homepage": "http://xidea.pl",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Artur Pszczółka",
+            "email": "artur.pszczolka@xidea.pl"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.*"
+    },
+    "require-dev": {
+    },
+    "autoload": {
+        "psr-0": { "Xidea\\Component\\Dataflow": "" }
+    },
+    "target-dir": "Xidea/Component/Dataflow",
+    "minimum-stability": "dev",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
