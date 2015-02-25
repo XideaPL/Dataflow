@@ -19,33 +19,33 @@ interface FileInterface
      * 
      * @return string The file id
      */
-    public function getId();
+    function getId();
 
     /**
      * Sets the name.
      * 
      * @param string $name
      */
-    public function setName($name);
+    function setName($name);
 
     /**
      * Returns the name.
      *
      * @return string
      */
-    public function getName();
+    function getName();
     
     /**
      * Sets the path.
      * 
      * @param string $path
      */
-    public function setPath($path);
+    function setPath($path);
 
     /**
      * Returns the path.
      *
      * @return string
      */
-    public function getPath();
+    function getPath();
 }

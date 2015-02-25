@@ -19,12 +19,19 @@ interface ImportExportInterface extends ProfileInterface
      * 
      * @param array $file
      */
-    public function setFile($file);
+    function setFile($file);
 
     /**
      * Returns the file.
      *
      * @return array
      */
-    public function getFile();
+    function getFile();
+    
+    /**
+     * Returns the file path.
+     *
+     * @return string
+     */
+    function getFilePath();
 }

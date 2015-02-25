@@ -22,7 +22,7 @@ interface ReaderInterface
     /**
      * @return bool
      */
-    function read($tags = array());
+    function read($fields = array());
     
     /**
      * @param bool

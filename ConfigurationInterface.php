@@ -18,4 +18,9 @@ interface ConfigurationInterface
      * @return string
      */
     public function getBasePath();
+    
+    /**
+     * @return string
+     */
+    public function getFilePath($filePath);
 }

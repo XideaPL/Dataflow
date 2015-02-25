@@ -22,7 +22,7 @@ class XmlReader implements ReaderInterface
     /*
      * @var string
      */
-    protected $nodeType = 'product';
+    protected $node = 'product';
     
     /*
      * 
@@ -30,52 +30,43 @@ class XmlReader implements ReaderInterface
     public function __construct()
     {
         $this->reader = new \XMLReader();
-        
-        
     }
     
     /**
      * @inheritDoc
      */
-    public function open($resource, $options = array())
+    public function open($resource, array $options = array())
     {
         $this->reader->open($resource);
-        
-        if(isset($options['nodeType'])) {
-            $this->nodeType = $options['nodeType'];
-        }
     }
     
-    public function read($tags = array())
+    public function read($fields = array())
     {
+        $reader = $this->reader;
         $results = array();
-        while($this->reader->next($this->nodeName)) {
-            switch ($this->reader->nodeType) {
-                case \XMLReader::TEXT:
-                    $this->reader->read();
-                    $results[] = $this->reader->value;
-                    break;
-                case \XmlReader::ELEMENT:
-                    if(!empty($tags)) {
-                        $data = array();
-                        while ($this->reader->read()) {
-                            if(in_array($this->reader->localName, $tags)) {
-                                switch($this->reader->nodeType) {
-                                    case \XmlReader::TEXT:
-                                        $data[$this->reader->localName] = $this->reader->value;
-                                        break;
-                                    case \XmlReader::ELEMENT:
-                                        $this->reader->read();
-                                        $data[$this->reader->localName] = $this->reader->value;
-                                        break;
-                                }
-                            }
-                        }
-                        $results[] = $data;
-                    }
-                    break;
-                default:
-                    break;
+        $counter = 0;
+        while($reader->read()) {
+            if($reader->nodeType == \XMLReader::ELEMENT && 
+                $reader->name == $this->node)
+            {
+                    $results[$counter] = array();
+            }
+            
+            if($reader->nodeType == \XMLReader::ELEMENT && in_array($reader->name, $fields)) {
+                    $name = $reader->name;
+            }
+            
+            if(isset($name) && $name && ($reader->nodeType == \XMLReader::TEXT || 
+                $reader->nodeType == \XMLReader::CDATA))
+            {
+                    $results[$counter][$name] = $reader->value;
+                    $name = '';
+            }
+
+            if($reader->nodeType == \XMLReader::END_ELEMENT && 
+            $reader->name == $this->node)
+            {
+                    $counter++;
             }
         }
         

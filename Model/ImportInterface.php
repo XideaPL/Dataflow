@@ -14,10 +14,36 @@ namespace Xidea\Component\Dataflow\Model;
  */
 interface ImportInterface extends ImportExportInterface
 {
+    const BEHAVIOR_INSERT = 1;
+    const BEHAVIOR_UPDATE = 2;
+    
     /**
-     * @param string
+     * Sets the behavior.
+     * 
+     * @param int $behavior
      */
-    function setReaderType($type);
+    function setBehavior($behavior);
+
+    /**
+     * Returns the behavior.
+     *
+     * @return int
+     */
+    function getBehavior();
+    
+    /**
+     * Sets the reader.
+     * 
+     * @param array $reader
+     */
+    function setReader($reader);
+
+    /**
+     * Returns the reader.
+     *
+     * @return array
+     */
+    function getReader();
     
     /**
      * @return string

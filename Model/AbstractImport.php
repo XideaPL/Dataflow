@@ -14,17 +14,36 @@ namespace Xidea\Component\Dataflow\Model;
  */
 abstract class AbstractImport extends AbstractImportExport implements ImportInterface
 {
-    /*
-     * @var string
+    /**
+     * @inheritDoc
      */
-    protected $readerType;
+    public function setBehavior($behavior)
+    {
+        $this->setOption('behavior', $behavior);
+    }
     
     /**
      * @inheritDoc
      */
-    public function setReaderType($type)
+    public function getBehavior()
     {
-        $this->setOption('reader_type', $type);
+        return $this->getOption('behavior');
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    public function setReader($reader)
+    {
+        $this->setOption('reader', $reader);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getReader()
+    {
+        return $this->getOption('reader');
     }
     
     /**
@@ -32,6 +51,8 @@ abstract class AbstractImport extends AbstractImportExport implements ImportInte
      */
     public function getReaderType()
     {
-        return $this->getOption('reader_type');
+        $reader = $this->getOption('reader');
+        
+        return isset($reader['type']) ? $reader['type'] : null;
     }
 }

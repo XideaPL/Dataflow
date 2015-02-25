@@ -30,11 +30,6 @@ abstract class AbstractProfile implements ProfileInterface
     protected $context;
     
     /*
-     * @var string
-     */
-    protected $direction;
-    
-    /*
      * @var array
      */
     protected $options;
@@ -77,22 +72,6 @@ abstract class AbstractProfile implements ProfileInterface
     public function getContext()
     {
         return $this->context;
-    }
-    
-    /**
-     * @inheritDoc
-     */
-    public function setDirection($direction)
-    {
-        $this->direction = $direction;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getDirection()
-    {
-        return $this->direction;
     }
     
     /**

@@ -29,4 +29,20 @@ abstract class AbstractImportExport extends AbstractProfile implements ImportExp
     {
         return $this->getOption('file');
     }
+    
+    /**
+     * @inheritDoc
+     */
+    public function getFilePath()
+    {
+        $file = $this->getFile();
+        
+        $filePath = isset($file['name']) ? $file['name'] : null;
+        
+        if($filePath && isset($file['path'])) {
+            $filePath = sprintf('%s/%s', $file['path'], $filePath);
+        }
+        
+        return $filepath;
+    }
 }

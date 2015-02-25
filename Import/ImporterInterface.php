@@ -21,7 +21,7 @@ interface ImporterInterface
      * @param string $context
      * @param ServiceInterface $service
      */
-    public function addService($context, ServiceInterface $service);
+    function addService($context, ServiceInterface $service);
 
     /**
      * Returns the service.
@@ -30,13 +30,13 @@ interface ImporterInterface
      * 
      * @return ServiceInterface|null The service
      */
-    public function getService($context);
+    function getService($context);
     
     /**
      * @param string $type
      * @param ReaderInterface $reader
      */
-    public function addReader($type, ReaderInterface $reader);
+    function addReader($type, ReaderInterface $reader);
 
     /**
      * Returns the reader.
@@ -45,10 +45,10 @@ interface ImporterInterface
      * 
      * @return ReaderInterface|null The reader
      */
-    public function getReader($type);
+    function getReader($type);
     
     /**
      * @param ImportInterface $import
      */
-    public function process(ImportInterface $import);
+    function process(ImportInterface $import);
 }

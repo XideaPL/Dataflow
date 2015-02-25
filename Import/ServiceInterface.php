@@ -17,5 +17,10 @@ interface ServiceInterface
     /**
      * @return array
      */
-    public function getTags();
+    function getFields();
+    
+    /*
+     * @param array $data
+     */
+    function import($data, array $options = array());
 }

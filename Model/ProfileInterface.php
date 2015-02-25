@@ -19,63 +19,49 @@ interface ProfileInterface
      * 
      * @return string The dataflow id
      */
-    public function getId();
+    function getId();
 
     /**
      * Sets the name.
      * 
      * @param string $name
      */
-    public function setName($name);
+    function setName($name);
 
     /**
      * Returns the name.
      *
      * @return string
      */
-    public function getName();
+    function getName();
     
     /**
      * Sets the context.
      * 
      * @param string $context
      */
-    public function setContext($context);
+    function setContext($context);
 
     /**
      * Returns the context.
      *
      * @return string
      */
-    public function getContext();
-    
-    /**
-     * Sets the direction.
-     * 
-     * @param string $direction
-     */
-    public function setDirection($direction);
-
-    /**
-     * Returns the direction.
-     *
-     * @return string
-     */
-    public function getDirection();
+    function getContext();
     
     /**
      * Sets the options.
      * 
      * @param array $options
      */
-    public function setOptions(array $options = array());
+    function setOptions(array $options = array());
 
     /**
      * Returns the options.
      *
      * @return array
      */
-    public function getOptions();
+    function getOptions();
     
     /**
      * Sets the option.
@@ -83,7 +69,7 @@ interface ProfileInterface
      * @param string $name
      * @param mixed $value
      */
-    public function setOption($name, $value);
+    function setOption($name, $value);
 
     /**
      * Returns the option.
@@ -93,5 +79,5 @@ interface ProfileInterface
      * 
      * @return mixed
      */
-    public function getOption($name, $default = null);
+    function getOption($name, $default = null);
 }
