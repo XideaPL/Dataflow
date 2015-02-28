@@ -12,7 +12,7 @@ namespace Xidea\Component\Dataflow\Model;
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
  */
-abstract class AbstractImport extends AbstractImportExport implements ImportInterface
+abstract class AbstractImport extends AbstractProfile implements ImportInterface
 {
     /**
      * @inheritDoc

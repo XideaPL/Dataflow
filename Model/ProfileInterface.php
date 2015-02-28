@@ -50,6 +50,20 @@ interface ProfileInterface
     function getContext();
     
     /**
+     * Sets the file.
+     * 
+     * @param array $file
+     */
+    function setFile($file);
+
+    /**
+     * Returns the file.
+     *
+     * @return array
+     */
+    function getFile();
+    
+    /**
      * Sets the options.
      * 
      * @param array $options
@@ -80,4 +94,11 @@ interface ProfileInterface
      * @return mixed
      */
     function getOption($name, $default = null);
+    
+    /**
+     * Returns the file path.
+     *
+     * @return string
+     */
+    function getFilePath();
 }

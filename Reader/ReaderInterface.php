@@ -14,8 +14,15 @@ namespace Xidea\Component\Dataflow\Reader;
  */
 interface ReaderInterface
 {
+    /*
+     * @param array $options
+     */
+    function configureOptions(array $options = array());
+    
     /**
      * @param string $resource
+     * 
+     * @return bool
      */
     function open($resource, array $options = array());
     
@@ -23,6 +30,11 @@ interface ReaderInterface
      * @return bool
      */
     function read($fields = array());
+    
+    /**
+     * @return bool
+     */
+    function move(array $fields);
     
     /**
      * @param bool

@@ -12,7 +12,7 @@ namespace Xidea\Component\Dataflow\Model;
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
  */
-interface ImportInterface extends ImportExportInterface
+interface ImportInterface extends ProfileInterface
 {
     const BEHAVIOR_INSERT = 1;
     const BEHAVIOR_UPDATE = 2;

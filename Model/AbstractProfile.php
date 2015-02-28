@@ -77,6 +77,22 @@ abstract class AbstractProfile implements ProfileInterface
     /**
      * @inheritDoc
      */
+    public function setFile($file)
+    {
+        $this->setOption('file', $file);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getFile()
+    {
+        return $this->getOption('file');
+    }
+    
+    /**
+     * @inheritDoc
+     */
     public function setOptions(array $options = array())
     {
         $this->options = $options;
@@ -104,5 +120,21 @@ abstract class AbstractProfile implements ProfileInterface
     public function getOption($name, $default = null)
     {
         return isset($this->options[$name]) ? $this->options[$name] : $default;
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    public function getFilePath()
+    {
+        $file = $this->getFile();
+        
+        $filePath = isset($file['name']) ? $file['name'] : null;
+        
+        if($filePath && isset($file['path'])) {
+            $filePath = sprintf('%s/%s', $file['path'], $filePath);
+        }
+        
+        return $filePath;
     }
 }
