@@ -25,9 +25,14 @@ interface ServiceInterface
     function getIdField();
     
     /*
-     * @param array $data
+     * @param array $record
      */
-    function import($data, array $options = array());
+    function add(array $record);
+    
+    /*
+     * @param array $options
+     */
+    function import(array $options = array());
     
     /*
      * @param array $record

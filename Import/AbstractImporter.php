@@ -76,7 +76,7 @@ abstract class AbstractImporter implements ImporterInterface
     /**
      * @inheritDoc
      */
-    public function process(ImportInterface $import)
+    public function process(ImportInterface $import, \Closure $readCallback = null)
     {
         $reader = $this->getReader($import->getReaderType());
         $service = $this->getService($import->getContext());
@@ -85,16 +85,20 @@ abstract class AbstractImporter implements ImporterInterface
         
         if(!empty($file)) {
             $reader->open($this->configuration->getFilePath($import->getFilePath()), $import->getReader());
-            
-            $data = array();
+
             while($record = $reader->read($service->getFields())) {
-                if($filteredRecord = $service->filter($record))
-                    $data[] = $filteredRecord;
+                if($service->add($record)) {
+                    if(is_callable($readCallback)) {
+                        $readCallback($record, $service);
+                    }
+                }
             }
             
-            $service->import($data);
-            
             $reader->close();
+            
+            return $service->import();
         }
+        
+        return false;
     }
 }
