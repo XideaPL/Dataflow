@@ -19,7 +19,7 @@ class ImportBuilder extends AbstractProfileBuilder implements ImportBuilderInter
      */
     public function setBehavior($behavior)
     {
-        $this->import->setBehavior($behavior);
+        $this->profile->setBehavior($behavior);
     }
     
     /**
@@ -27,6 +27,6 @@ class ImportBuilder extends AbstractProfileBuilder implements ImportBuilderInter
      */
     public function setReader(array $reader)
     {
-        $this->import->setReader($reader);
+        $this->profile->setReader($reader);
     }
 }
