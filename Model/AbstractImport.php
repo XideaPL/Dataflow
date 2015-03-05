@@ -14,6 +14,11 @@ namespace Xidea\Component\Dataflow\Model;
  */
 abstract class AbstractImport extends AbstractProfile implements ImportInterface
 {
+    /*
+     * @var array
+     */
+    protected $fields;
+    
     /**
      * @inheritDoc
      */
@@ -54,5 +59,21 @@ abstract class AbstractImport extends AbstractProfile implements ImportInterface
         $reader = $this->getOption('reader');
         
         return isset($reader['type']) ? $reader['type'] : null;
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    public function setFields(array $fields)
+    {
+        $this->fields = $fields;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getFields()
+    {
+        return $this->fields;
     }
 }

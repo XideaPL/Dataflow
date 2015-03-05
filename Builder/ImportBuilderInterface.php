@@ -23,4 +23,9 @@ interface ImportBuilderInterface extends ProfileBuilderInterface
      * @param array
      */
     function setReader(array $reader);
+    
+    /**
+     * @param array
+     */
+    function setFields(array $fields);
 }

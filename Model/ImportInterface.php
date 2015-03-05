@@ -49,4 +49,18 @@ interface ImportInterface extends ProfileInterface
      * @return string
      */
     function getReaderType();
+    
+    /**
+     * Sets the fields.
+     * 
+     * @param array $fields
+     */
+    function setFields(array $fields);
+
+    /**
+     * Returns the fields.
+     *
+     * @return array
+     */
+    function getFields();
 }

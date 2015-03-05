@@ -29,4 +29,12 @@ class ImportBuilder extends AbstractProfileBuilder implements ImportBuilderInter
     {
         $this->profile->setReader($reader);
     }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function setFields(array $fields)
+    {
+        $this->profile->setFields($fields);
+    }
 }

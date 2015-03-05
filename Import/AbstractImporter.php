@@ -80,16 +80,17 @@ abstract class AbstractImporter implements ImporterInterface
     {
         $reader = $this->getReader($import->getReaderType());
         $service = $this->getService($import->getContext());
-        
+
         $file = $import->getFile();
-        
+
         if(!empty($file)) {
             $reader->open($this->configuration->getFilePath($import->getFilePath()), $import->getReader());
 
-            while($record = $reader->read($service->getFields())) {
-                if($service->add($record)) {
+            $service->configureFields($import->getFields());
+            while($record = $reader->read($service->getReaderFields())) {
+                if($addedRecord = $service->add($record)) {
                     if(is_callable($readCallback)) {
-                        $readCallback($record, $service);
+                        $readCallback($addedRecord, $service);
                     }
                 }
             }
