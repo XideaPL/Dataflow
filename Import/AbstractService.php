@@ -110,9 +110,4 @@ abstract class AbstractService implements ServiceInterface
         
         return $record;
     }
-    
-    protected function initFields()
-    {
-        $this->fields = [];
-    }
 }
