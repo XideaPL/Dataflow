@@ -32,26 +32,28 @@ abstract class AbstractService implements ServiceInterface
     protected $options;
     
     /*
-     * 
+     * @var string
      */
-    public function __construct()
-    {
-        $this->initFields();
-    }
+    protected $idFieldName = null;
     
     public function getFields()
     {
         return $this->fields;
     }
     
-    public function getIdField()
+    public function getIdFieldName()
     {
-        foreach($this->getFields() as $name => $config) {
-            if(isset($config['id']) && $config['id'])
-                return $name;
+        if($this->idFieldName !== null) {
+            return $this->idFieldName;
         }
         
-        return null;
+        foreach($this->getFields() as $name => $config) {
+            if(isset($config['id']) && $config['id']) {
+                $this->idFieldName = $name;
+            }
+        }
+        
+        return $this->idFieldName;
     }
     
     public function getReaderFields()

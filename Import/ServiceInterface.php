@@ -27,7 +27,7 @@ interface ServiceInterface
     /**
      * @return string
      */
-    function getIdField();
+    function getIdFieldName();
     
     /*
      * @return void
