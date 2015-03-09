@@ -44,6 +44,16 @@ abstract class AbstractService implements ServiceInterface
         return $this->fields;
     }
     
+    public function getIdField()
+    {
+        foreach($this->getFields() as $name => $config) {
+            if(isset($config['id']) && $config['id'])
+                return $name;
+        }
+        
+        return null;
+    }
+    
     public function getReaderFields()
     {
         $fields = [];
