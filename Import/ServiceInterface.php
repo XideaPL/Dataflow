@@ -19,10 +19,25 @@ interface ServiceInterface
      */
     function getFields();
     
+    /*
+     * @return array
+     */
+    function getReaderFields();
+    
     /**
      * @return string
      */
     function getIdField();
+    
+    /*
+     * @return void
+     */
+    function configureFields(array $fields = array());
+    
+    /*
+     * @return void
+     */
+    function configureOptions();
     
     /*
      * @param array $record
@@ -32,7 +47,7 @@ interface ServiceInterface
     /*
      * @param array $options
      */
-    function import(array $options = array());
+    function import();
     
     /*
      * @param array $record

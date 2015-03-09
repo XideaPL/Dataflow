@@ -15,7 +15,7 @@ namespace Xidea\Component\Dataflow\Builder;
 interface ImportBuilderInterface extends ProfileBuilderInterface
 {
     /**
-     * @param int
+     * @param string
      */
     function setBehavior($behavior);
     

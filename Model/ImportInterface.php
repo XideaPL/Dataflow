@@ -14,20 +14,21 @@ namespace Xidea\Component\Dataflow\Model;
  */
 interface ImportInterface extends ProfileInterface
 {
-    const BEHAVIOR_INSERT = 1;
-    const BEHAVIOR_UPDATE = 2;
+    const BEHAVIOR_INSERT = 'insert';
+    const BEHAVIOR_UPDATE = 'update';
+    const BEHAVIOR_INSERT_UPDATE = 'insert_update';
     
     /**
      * Sets the behavior.
      * 
-     * @param int $behavior
+     * @param string $behavior
      */
     function setBehavior($behavior);
 
     /**
      * Returns the behavior.
      *
-     * @return int
+     * @return string
      */
     function getBehavior();
     

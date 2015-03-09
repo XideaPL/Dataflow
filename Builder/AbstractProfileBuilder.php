@@ -73,7 +73,7 @@ abstract class AbstractProfileBuilder implements ProfileBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function get()
+    public function getProfile()
     {
         return $this->profile;
     }

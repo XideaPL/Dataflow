@@ -37,5 +37,5 @@ interface ProfileBuilderInterface
     /**
      * @return \Xidea\Component\Dataflow\Model\ProfileInterface
      */
-    function get();
+    function getProfile();
 }
