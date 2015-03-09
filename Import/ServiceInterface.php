@@ -32,12 +32,12 @@ interface ServiceInterface
     /*
      * @return void
      */
-    function configureFields(array $fields = array());
+    function configureFields(array $fields = []);
     
     /*
      * @return void
      */
-    function configureOptions();
+    function configureOptions(array $options = []);
     
     /*
      * @param array $record
