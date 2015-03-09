@@ -97,7 +97,8 @@ abstract class AbstractService implements ServiceInterface
         }
         
         if($filteredRecord = $this->filter($record)) {
-            $this->data[] = $filteredRecord;
+            $id = $filteredRecord[$this->getIdFieldName()];
+            $this->data[$id] = $filteredRecord;
             
             return $filteredRecord;
         }
