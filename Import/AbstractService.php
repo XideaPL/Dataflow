@@ -132,7 +132,7 @@ abstract class AbstractService implements ServiceInterface
         try {
             switch($this->options['behavior']) {
                 case ImportInterface::BEHAVIOR_INSERT:
-                    return $this->import();
+                    return $this->insert();
                 case ImportInterface::BEHAVIOR_UPDATE:
                     return $this->update();
                 case ImportInterface::BEHAVIOR_INSERT_UPDATE:
@@ -141,6 +141,7 @@ abstract class AbstractService implements ServiceInterface
         } catch(\Exception $e) {
             
         }
+        
         return false;
     }
     
