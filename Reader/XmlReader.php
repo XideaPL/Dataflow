@@ -27,11 +27,6 @@ class XmlReader implements ReaderInterface
     protected $options;
 
     /*
-     * @var string
-     */
-    protected $node = 'product';
-
-    /*
      * 
      */
     public function __construct()
@@ -42,15 +37,17 @@ class XmlReader implements ReaderInterface
     /**
      * @inheritDoc
      */
-    public function configureOptions(array $options = array())
+    public function configureOptions(array $options = [])
     {
-        $this->options = $options;
+        $this->options = array_merge([
+           'node' => 'product'
+        ], $options);
     }
 
     /**
      * @inheritDoc
      */
-    public function open($resource, array $options = array())
+    public function open($resource, array $options = [])
     {
         $this->configureOptions($options);
         
@@ -60,15 +57,17 @@ class XmlReader implements ReaderInterface
     /**
      * @inheritDoc
      */
-    public function read($fields = array())
+    public function read(array $fields = [])
     {
         $reader = $this->reader;
-        $result = array();
+        $node = $this->options['node'];
+        
+        $result = [];
         $read = true;
         while ($read && $reader->read()) {
             if ($reader->nodeType == \XMLReader::ELEMENT &&
-                    $reader->name == $this->node) {
-                $result = array();
+                    $reader->name == $node) {
+                $result = [];
             }
 
             if ($reader->nodeType == \XMLReader::ELEMENT && in_array($reader->name, $fields)) {
@@ -82,7 +81,7 @@ class XmlReader implements ReaderInterface
             }
 
             if ($reader->nodeType == \XMLReader::END_ELEMENT &&
-                    $reader->name == $this->node) {
+                    $reader->name == $node) {
                 $read = false;
             }
         }
@@ -96,6 +95,8 @@ class XmlReader implements ReaderInterface
     public function move(array $fields)
     {
         $reader = $this->reader;
+        $node = $this->options['node'];
+        
         $fieldsNames = array_keys($fields);
         $fieldsCounter = count($fieldsNames);
         $counter = 0;
@@ -103,8 +104,8 @@ class XmlReader implements ReaderInterface
         $read = $fieldsCounter;
         while ($read && $reader->read()) {
             if ($reader->nodeType == \XMLReader::ELEMENT &&
-                    $reader->name == $this->node) {
-                $result = array();
+                    $reader->name == $node) {
+                $result = [];
             }
 
             if ($reader->nodeType == \XMLReader::ELEMENT && in_array($reader->name, $fieldsNames)) {
@@ -122,7 +123,7 @@ class XmlReader implements ReaderInterface
             }
 
             if ($reader->nodeType == \XMLReader::END_ELEMENT &&
-                    $reader->name == $this->node) {
+                    $reader->name == $node) {
                 $read = ($fieldsCounter != $counter);
             }
         }
@@ -137,5 +138,4 @@ class XmlReader implements ReaderInterface
     {
         $this->reader->close();
     }
-
 }

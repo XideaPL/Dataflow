@@ -17,19 +17,19 @@ interface ReaderInterface
     /*
      * @param array $options
      */
-    function configureOptions(array $options = array());
+    function configureOptions(array $options = []);
     
     /**
      * @param string $resource
      * 
      * @return bool
      */
-    function open($resource, array $options = array());
+    function open($resource, array $options = []);
     
     /**
      * @return bool
      */
-    function read($fields = array());
+    function read(array $fields = []);
     
     /**
      * @return bool
