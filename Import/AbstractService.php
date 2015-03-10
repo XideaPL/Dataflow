@@ -36,11 +36,17 @@ abstract class AbstractService implements ServiceInterface
      */
     protected $idFieldName = null;
     
+    /**
+     * @inheritDoc
+     */
     public function getFields()
     {
         return $this->fields;
     }
     
+    /**
+     * @inheritDoc
+     */
     public function getIdFieldName()
     {
         if($this->idFieldName !== null) {
@@ -56,6 +62,9 @@ abstract class AbstractService implements ServiceInterface
         return $this->idFieldName;
     }
     
+    /**
+     * @inheritDoc
+     */
     public function getReaderFields()
     {
         $fields = [];
@@ -65,6 +74,9 @@ abstract class AbstractService implements ServiceInterface
         return $fields;
     }
     
+    /**
+     * @inheritDoc
+     */
     public function configureFields(array $fields = [])
     {
         if(empty($fields))
@@ -80,6 +92,9 @@ abstract class AbstractService implements ServiceInterface
         $this->fields = $results;
     }
     
+    /**
+     * @inheritDoc
+     */
     public function configureOptions(array $options = [])
     {
         $this->options = array_merge([
@@ -88,6 +103,9 @@ abstract class AbstractService implements ServiceInterface
         ], $options);
     }
     
+    /**
+     * @inheritDoc
+     */
     public function add(array $record)
     {
         foreach($this->fields as $name => $config) {
@@ -106,15 +124,29 @@ abstract class AbstractService implements ServiceInterface
         return false;
     }
     
+    /**
+     * @inheritDoc
+     */
     public function import()
     {
         try {
-            call_user_func_array([$this, $this->options['behavior']], [$this->options['batch_size']]);
+            switch($this->options['behavior']) {
+                case ImportInterface::BEHAVIOR_INSERT:
+                    return $this->import();
+                case ImportInterface::BEHAVIOR_UPDATE:
+                    return $this->update();
+                case ImportInterface::BEHAVIOR_INSERT_UPDATE:
+                    return $this->insertAndUpdate();
+            }
         } catch(\Exception $e) {
             
         }
+        return false;
     }
     
+    /**
+     * @inheritDoc
+     */
     public function filter(array $record)
     {
         if(empty($record)) {
@@ -123,4 +155,19 @@ abstract class AbstractService implements ServiceInterface
         
         return $record;
     }
+    
+    /**
+     * @return bool
+     */
+    abstract protected function insert();
+    
+    /**
+     * @return bool
+     */
+    abstract protected function update();
+    
+    /**
+     * @return bool
+     */
+    abstract protected function insertAndUpdate();
 }
