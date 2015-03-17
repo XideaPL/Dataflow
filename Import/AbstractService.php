@@ -9,13 +9,19 @@
 
 namespace Xidea\Component\Dataflow\Import;
 
-use Xidea\Component\Dataflow\Model\ImportInterface;
+use Xidea\Component\Dataflow\Model\ImportInterface,
+    Xidea\Component\Dataflow\Reader\ReaderInterface;
 
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
  */
 abstract class AbstractService implements ServiceInterface
 {
+    /**
+     * @var ImportInterface
+     */
+    protected $import;
+    
     /*
      * @var array
      */
@@ -35,6 +41,27 @@ abstract class AbstractService implements ServiceInterface
      * @var string
      */
     protected $idFieldName = null;
+    
+    /**
+     * @inheritDoc
+     */
+    public function setImport(ImportInterface $import)
+    {
+        $this->import = $import;
+        
+        $this->configureOptions([
+            'behavior' => $import->getBehavior()
+        ]);
+        $this->configureFields($import->getFields());
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    public function getImport()
+    {
+        return $this->import;
+    }
     
     /**
      * @inheritDoc
@@ -65,30 +92,17 @@ abstract class AbstractService implements ServiceInterface
     /**
      * @inheritDoc
      */
-    public function getReaderFields()
-    {
-        $fields = [];
-        foreach($this->getFields() as $name => $config) {
-            $fields[] = isset($config['alias']) ? $config['alias'] : $name;
-        }
-        return $fields;
-    }
-    
-    /**
-     * @inheritDoc
-     */
     public function configureFields(array $fields = [])
     {
         if(empty($fields))
             return;
-
+        
         $results = [];
         foreach($fields as $name => $config) {
             if(isset($this->fields[$name])) {
                 $results[$name] = array_merge($this->fields[$name], $config);
             }
         }
-        
         $this->fields = $results;
     }
     
@@ -106,30 +120,18 @@ abstract class AbstractService implements ServiceInterface
     /**
      * @inheritDoc
      */
-    public function add(array $record)
-    {
-        foreach($this->fields as $name => $config) {
-            if(isset($config['alias']) && array_key_exists($config['alias'], $record)) {
-                $record[$name] = $record[$config['alias']];
-            }
-        }
-        
-        if($filteredRecord = $this->filter($record)) {
-            $id = $filteredRecord[$this->getIdFieldName()];
-            $this->data[$id] = $filteredRecord;
-            
-            return $filteredRecord;
-        }
-        
-        return false;
-    }
-    
-    /**
-     * @inheritDoc
-     */
-    public function import()
+    public function import(ReaderInterface $reader, \Closure $readCallback = null)
     {
         try {
+            $readerFields = $this->getReaderFields();
+            while($record = $reader->read($readerFields)) {
+                if($addedRecord = $this->add($record)) {
+                    if(is_callable($readCallback)) {
+                        $readCallback($addedRecord, $this);
+                    }
+                }
+            }
+            
             switch($this->options['behavior']) {
                 case ImportInterface::BEHAVIOR_INSERT:
                     return $this->insert();
@@ -139,7 +141,7 @@ abstract class AbstractService implements ServiceInterface
                     return $this->insertAndUpdate();
             }
         } catch(\Exception $e) {
-            
+            die($e->getMessage());
         }
         
         return false;
@@ -148,13 +150,51 @@ abstract class AbstractService implements ServiceInterface
     /**
      * @inheritDoc
      */
-    public function filter(array $record)
+    protected function getReaderFields()
+    {
+        $fields = [];
+        
+        foreach($this->getFields() as $name => $config) {
+            $fields[] = isset($config['alias']) ? $config['alias'] : $name;
+        }
+        return $fields;
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    protected function filter(array $record)
     {
         if(empty($record)) {
             return [];
         }
         
         return $record;
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    protected function add(array $record)
+    {
+        $data = [];
+        
+        foreach($this->fields as $name => $config) {
+            if(array_key_exists($name, $record)) {
+                $data[$name] = $record[$name];
+            } elseif(isset($config['alias']) && array_key_exists($config['alias'], $record)) {
+                $data[$name] = $record[$config['alias']];
+            }
+        }
+
+        if($filteredRecord = $this->filter($data)) {
+            $id = $filteredRecord[$this->getIdFieldName()];
+            $this->data[$id] = $filteredRecord;
+            
+            return $filteredRecord;
+        }
+        
+        return false;
     }
     
     /**

@@ -12,7 +12,7 @@ namespace Xidea\Component\Dataflow\Model;
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
  */
-abstract class AbstractImport extends AbstractProfile implements ImportInterface
+abstract class AbstractExport extends AbstractProfile implements ExportInterface
 {
     /*
      * @var array
@@ -22,43 +22,27 @@ abstract class AbstractImport extends AbstractProfile implements ImportInterface
     /**
      * @inheritDoc
      */
-    public function setBehavior($behavior)
+    public function setWriter($writer)
     {
-        $this->setOption('behavior', $behavior);
-    }
-    
-    /**
-     * @inheritDoc
-     */
-    public function getBehavior()
-    {
-        return $this->getOption('behavior');
-    }
-    
-    /**
-     * @inheritDoc
-     */
-    public function setReader($reader)
-    {
-        $this->setOption('reader', $reader);
+        $this->setOption('writer', $writer);
     }
 
     /**
      * @inheritDoc
      */
-    public function getReader()
+    public function getWriter()
     {
-        return $this->getOption('reader');
+        return $this->getOption('writer');
     }
     
     /**
      * @inheritDoc
      */
-    public function getReaderType()
+    public function getWriterType()
     {
-        $reader = $this->getOption('reader');
+        $writer = $this->getOption('writer');
         
-        return isset($reader['type']) ? $reader['type'] : null;
+        return isset($writer['type']) ? $writer['type'] : null;
     }
     
     /**

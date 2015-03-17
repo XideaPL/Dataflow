@@ -7,25 +7,25 @@
  * file that was distributed with this source code.
  */
 
-namespace Xidea\Component\Dataflow\Import;
+namespace Xidea\Component\Dataflow\Export;
 
-use Xidea\Component\Dataflow\Model\ImportInterface,
-    Xidea\Component\Dataflow\Reader\ReaderInterface;
+use Xidea\Component\Dataflow\Model\ExportInterface,
+    Xidea\Component\Dataflow\Writer\WriterInterface;
 
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
  */
 interface ServiceInterface
 {
-    /**
-     * @param ImportInterface $import
+        /**
+     * @param ExportInterface $export
      */
-    function setImport(ImportInterface $import);
+    function setExport(ExportInterface $export);
     
     /**
-     * @return ImportInterface The import model
+     * @return ExportInterface The export model
      */
-    function getImport();
+    function getExport();
     
     /**
      * @return array
@@ -48,8 +48,8 @@ interface ServiceInterface
     function configureOptions(array $options = []);
 
     /*
-     * @param ReaderInterface $reader
+     * @param WriterInterface $writer
      * @param \Closure|null $readCallback
      */
-    function import(ReaderInterface $reader, \Closure $readCallback = null);
+    function export(WriterInterface $writer, \Closure $writeCallback = null);
 }

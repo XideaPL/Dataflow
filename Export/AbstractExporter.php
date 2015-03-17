@@ -7,16 +7,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Xidea\Component\Dataflow\Import;
+namespace Xidea\Component\Dataflow\Export;
 
 use Xidea\Component\Dataflow\ConfigurationInterface,
-    Xidea\Component\Dataflow\Reader\ReaderInterface,  
-    Xidea\Component\Dataflow\Model\ImportInterface;
+    Xidea\Component\Dataflow\Writer\WriterInterface,  
+    Xidea\Component\Dataflow\Model\ExportInterface;
 
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
  */
-abstract class AbstractImporter implements ImporterInterface
+abstract class AbstractExporter implements ExporterInterface
 {
     /*
      * @var ConfigurationInterface
@@ -31,7 +31,7 @@ abstract class AbstractImporter implements ImporterInterface
     /*
      * @var array
      */
-    protected $readers;
+    protected $writers;
     
     /*
      * 
@@ -60,36 +60,36 @@ abstract class AbstractImporter implements ImporterInterface
     /**
      * @inheritDoc
      */
-    public function addReader($type, ReaderInterface $reader)
+    public function addWriter($type, WriterInterface $writer)
     {
-        $this->readers[$type] = $reader;
+        $this->writers[$type] = $writer;
     }
     
     /**
      * @inheritDoc
      */
-    public function getReader($type)
+    public function getWriter($type)
     {
-        return isset($this->readers[$type]) ? $this->readers[$type] : null;
+        return isset($this->writers[$type]) ? $this->writers[$type] : null;
     }
     
     /**
      * @inheritDoc
      */
-    public function process(ImportInterface $import, \Closure $readCallback = null)
+    public function process(ExportInterface $export, \Closure $writeCallback = null)
     {
-        $reader = $this->getReader($import->getReaderType());
-        $service = $this->getService($import->getContext());
+        $writer = $this->getWriter($export->getWriterType());
+        $service = $this->getService($export->getContext());
 
-        $file = $import->getFile();
+        $file = $export->getFile();
 
         if(!empty($file)) {
-            $reader->open($this->configuration->getFilePath($import->getFilePath()), $import->getReader());
+            $writer->open($this->configuration->getFilePath($export->getFilePath()), $export->getWriter());
+
+            $service->setExport($export);
+            $result = $service->export($writer, $writeCallback);
             
-            $service->setImport($import);
-            $result = $service->import($reader, $readCallback);
-            
-            $reader->close();
+            $writer->close();
             
             return $result;
         }
