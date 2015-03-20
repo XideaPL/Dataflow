@@ -91,7 +91,9 @@ abstract class AbstractService implements ServiceInterface
 
         $results = [];
         foreach($fields as $name => $config) {
-            if(isset($this->fields[$name])) {
+            if(isset($config['virtual'])) {
+                $results[$name] = $config;
+            } elseif(isset($this->fields[$name])) {
                 $results[$name] = array_merge($this->fields[$name], $config);
             }
         }
