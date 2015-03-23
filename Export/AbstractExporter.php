@@ -84,7 +84,12 @@ abstract class AbstractExporter implements ExporterInterface
         $file = $export->getFile();
 
         if(!empty($file)) {
-            $writer->open($this->configuration->getFilePath($export->getFilePath()), $export->getWriter());
+            $filePath = $this->configuration->getFilePath($export->getFilePath());
+            if(!file_exists(dirname($filePath))) {
+                mkdir(dirname($filePath), 0777, true);
+            }
+            
+            $writer->open($filePath, $export->getWriter());
 
             $service->setExport($export);
             $result = $service->export($writer, $writeCallback);

@@ -84,7 +84,12 @@ abstract class AbstractImporter implements ImporterInterface
         $file = $import->getFile();
 
         if(!empty($file)) {
-            $reader->open($this->configuration->getFilePath($import->getFilePath()), $import->getReader());
+            $filePath = $this->configuration->getFilePath($import->getFilePath());
+            if(!file_exists(dirname($filePath))) {
+                mkdir(dirname($filePath), 0777, true);
+            }
+            
+            $reader->open($filePath, $import->getReader());
             
             $service->setImport($import);
             $result = $service->import($reader, $readCallback);
