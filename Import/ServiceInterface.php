@@ -20,6 +20,11 @@ interface ServiceInterface
     function getFields();
     
     /**
+     * @return array
+     */
+    function getReaderFields();
+    
+    /**
      * @return string
      */
     function getIdFieldName();

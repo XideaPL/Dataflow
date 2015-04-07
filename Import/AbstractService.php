@@ -47,7 +47,7 @@ abstract class AbstractService implements ServiceInterface
     /**
      * @inheritDoc
      */
-    protected function getReaderFields()
+    public function getReaderFields()
     {
         $fields = [];
         

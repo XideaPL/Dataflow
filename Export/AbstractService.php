@@ -40,6 +40,18 @@ abstract class AbstractService implements ServiceInterface
     /**
      * @inheritDoc
      */
+    public function getWriterFields()
+    {
+        $fields = [];
+        foreach($this->getFields() as $name => $config) {
+            $fields[] = isset($config['alias']) ? $config['alias'] : $name;
+        }
+        return $fields;
+    }
+    
+    /**
+     * @inheritDoc
+     */
     public function getIdFieldName()
     {
         if($this->idFieldName !== null) {
@@ -53,6 +65,15 @@ abstract class AbstractService implements ServiceInterface
         }
         
         return $this->idFieldName;
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    public function configure(array $options = [], array $fields = [])
+    {
+        $this->configureOptions($options);
+        $this->configureFields($fields);
     }
     
     /**
@@ -83,17 +104,5 @@ abstract class AbstractService implements ServiceInterface
         $this->options = array_merge([
            'batch_size' => 50
         ], $options);
-    }
-    
-    /**
-     * @inheritDoc
-     */
-    public function getWriterFields()
-    {
-        $fields = [];
-        foreach($this->getFields() as $name => $config) {
-            $fields[] = isset($config['alias']) ? $config['alias'] : $name;
-        }
-        return $fields;
     }
 }
