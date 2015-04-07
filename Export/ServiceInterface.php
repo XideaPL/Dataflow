@@ -9,33 +9,30 @@
 
 namespace Xidea\Component\Dataflow\Export;
 
-use Xidea\Component\Dataflow\Model\ExportInterface,
-    Xidea\Component\Dataflow\Writer\WriterInterface;
-
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
  */
 interface ServiceInterface
 {
-        /**
-     * @param ExportInterface $export
-     */
-    function setExport(ExportInterface $export);
-    
-    /**
-     * @return ExportInterface The export model
-     */
-    function getExport();
-    
     /**
      * @return array
      */
     function getFields();
     
+    /*
+     * @return array
+     */
+    function getWriterFields();
+    
     /**
      * @return string
      */
     function getIdFieldName();
+    
+    /*
+     * @return void
+     */
+    function configure(array $options = [], array $fields = []);
     
     /*
      * @return void
@@ -48,8 +45,7 @@ interface ServiceInterface
     function configureOptions(array $options = []);
 
     /*
-     * @param WriterInterface $writer
-     * @param \Closure|null $readCallback
+     * @return array The export data
      */
-    function export(WriterInterface $writer, \Closure $writeCallback = null);
+    function export();
 }

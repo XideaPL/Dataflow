@@ -49,9 +49,9 @@ interface ExporterInterface
     
     /**
      * @param ExportInterface $export
-     * @param \Closure|null $writeCallback
+     * @param \Closure|null $callback
      * 
      * @return bool
      */
-    function process(ExportInterface $export, \Closure $writeCallback = null);
+    function process(ExportInterface $export, \Closure $callback = null);
 }

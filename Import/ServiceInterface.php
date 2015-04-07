@@ -9,24 +9,11 @@
 
 namespace Xidea\Component\Dataflow\Import;
 
-use Xidea\Component\Dataflow\Model\ImportInterface,
-    Xidea\Component\Dataflow\Reader\ReaderInterface;
-
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
  */
 interface ServiceInterface
 {
-    /**
-     * @param ImportInterface $import
-     */
-    function setImport(ImportInterface $import);
-    
-    /**
-     * @return ImportInterface The import model
-     */
-    function getImport();
-    
     /**
      * @return array
      */
@@ -40,16 +27,41 @@ interface ServiceInterface
     /*
      * @return void
      */
+    function configure(array $options = [], array $fields = []);
+    
+    /*
+     * @return void
+     */
     function configureFields(array $fields = []);
     
     /*
      * @return void
      */
     function configureOptions(array $options = []);
+    
+    /*
+     * @param array $record
+     * 
+     * @return array The result
+     */
+    function add(array $record);
+    
+    /*
+     * @param array $record
+     * 
+     * @return array The result
+     */
+    function filter(array $record);
+    
+    /*
+     * @param array $record
+     * 
+     * @return array The result
+     */
+    function convert(array $record);
 
     /*
-     * @param ReaderInterface $reader
-     * @param \Closure|null $readCallback
+     * @param \Closure|null $callback
      */
-    function import(ReaderInterface $reader, \Closure $readCallback = null);
+    function import(\Closure $callback = null);
 }

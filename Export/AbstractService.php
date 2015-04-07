@@ -9,19 +9,11 @@
 
 namespace Xidea\Component\Dataflow\Export;
 
-use Xidea\Component\Dataflow\Model\ExportInterface,
-    Xidea\Component\Dataflow\Writer\WriterInterface;
-
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
  */
 abstract class AbstractService implements ServiceInterface
 {
-    /**
-     * @var ExportInterface
-     */
-    protected $export;
-    
     /*
      * @var array
      */
@@ -36,24 +28,6 @@ abstract class AbstractService implements ServiceInterface
      * @var string
      */
     protected $idFieldName = null;
-    
-    /**
-     * @inheritDoc
-     */
-    public function setExport(ExportInterface $export)
-    {
-        $this->export = $export;
-
-        $this->configureFields($export->getFields());
-    }
-    
-    /**
-     * @inheritDoc
-     */
-    public function getExport()
-    {
-        return $this->export;
-    }
     
     /**
      * @inheritDoc
@@ -114,15 +88,7 @@ abstract class AbstractService implements ServiceInterface
     /**
      * @inheritDoc
      */
-    public function export(WriterInterface $writer, \Closure $writeCallback = null)
-    {
-        return $writer->write($this->getWriterFields());
-    }
-    
-    /**
-     * @inheritDoc
-     */
-    protected function getWriterFields()
+    public function getWriterFields()
     {
         $fields = [];
         foreach($this->getFields() as $name => $config) {

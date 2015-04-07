@@ -9,28 +9,17 @@
 
 namespace Xidea\Component\Dataflow\Import;
 
-use Xidea\Component\Dataflow\Model\ImportInterface,
-    Xidea\Component\Dataflow\Reader\ReaderInterface;
+use Xidea\Component\Dataflow\Model\ImportInterface;
 
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
  */
 abstract class AbstractService implements ServiceInterface
-{
-    /**
-     * @var ImportInterface
-     */
-    protected $import;
-    
+{    
     /*
      * @var array
      */
     protected $fields;
-    
-    /*
-     * var array
-     */
-    protected $data;
     
     /*
      * @var array
@@ -42,26 +31,10 @@ abstract class AbstractService implements ServiceInterface
      */
     protected $idFieldName = null;
     
-    /**
-     * @inheritDoc
+    /*
+     * @var array
      */
-    public function setImport(ImportInterface $import)
-    {
-        $this->import = $import;
-        
-        $this->configureOptions([
-            'behavior' => $import->getBehavior()
-        ]);
-        $this->configureFields($import->getFields());
-    }
-    
-    /**
-     * @inheritDoc
-     */
-    public function getImport()
-    {
-        return $this->import;
-    }
+    protected $data;
     
     /**
      * @inheritDoc
@@ -69,6 +42,19 @@ abstract class AbstractService implements ServiceInterface
     public function getFields()
     {
         return $this->fields;
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    protected function getReaderFields()
+    {
+        $fields = [];
+        
+        foreach($this->getFields() as $name => $config) {
+            $fields[] = isset($config['alias']) ? $config['alias'] : $name;
+        }
+        return $fields;
     }
     
     /**
@@ -87,6 +73,15 @@ abstract class AbstractService implements ServiceInterface
         }
         
         return $this->idFieldName;
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    public function configure(array $options = [], array $fields = [])
+    {
+        $this->configureOptions($options);
+        $this->configureFields($fields);
     }
     
     /**
@@ -120,25 +115,57 @@ abstract class AbstractService implements ServiceInterface
     /**
      * @inheritDoc
      */
-    public function import(ReaderInterface $reader, \Closure $readCallback = null)
+    public function add(array $record)
     {
-        try {
-            $readerFields = $this->getReaderFields();
-            while($record = $reader->read($readerFields)) {
-                if($addedRecord = $this->add($record)) {
-                    if(is_callable($readCallback)) {
-                        $readCallback($addedRecord, $this);
-                    }
+        $record = $this->convert($record);
+        if($filteredRecord = $this->filter($record)) {
+            $this->data[] = $filteredRecord;
+        }
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    public function filter(array $record)
+    {
+        return $record;
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    public function convert(array $record)
+    {
+        $idField = $this->getIdFieldName();
+        
+        $result = [];
+        foreach($data as $record) {
+            foreach($this->fields as $name => $config) {
+                $id = isset($config[$idField]) ? $config[$idField] : $name;
+                if(array_key_exists($name, $record)) {
+                    $result[$id] = $record[$name];
+                } elseif(isset($config['alias']) && array_key_exists($config['alias'], $record)) {
+                    $result[$id] = $record[$config['alias']];
                 }
             }
-            
+        }
+        
+        return $result;
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    public function import(\Closure $callback = null)
+    {
+        try {
             switch($this->options['behavior']) {
                 case ImportInterface::BEHAVIOR_INSERT:
-                    return $this->insert();
+                    return $this->insert($callback);
                 case ImportInterface::BEHAVIOR_UPDATE:
-                    return $this->update();
+                    return $this->update($callback);
                 case ImportInterface::BEHAVIOR_INSERT_UPDATE:
-                    return $this->insertAndUpdate();
+                    return $this->insertAndUpdate($callback);
             }
         } catch(\Exception $e) {
             die($e->getMessage());
@@ -148,67 +175,17 @@ abstract class AbstractService implements ServiceInterface
     }
     
     /**
-     * @inheritDoc
+     * @return bool
      */
-    protected function getReaderFields()
-    {
-        $fields = [];
-        
-        foreach($this->getFields() as $name => $config) {
-            $fields[] = isset($config['alias']) ? $config['alias'] : $name;
-        }
-        return $fields;
-    }
-    
-    /**
-     * @inheritDoc
-     */
-    protected function filter(array $record)
-    {
-        if(empty($record)) {
-            return [];
-        }
-        
-        return $record;
-    }
-    
-    /**
-     * @inheritDoc
-     */
-    protected function add(array $record)
-    {
-        $data = [];
-        
-        foreach($this->fields as $name => $config) {
-            if(array_key_exists($name, $record)) {
-                $data[$name] = $record[$name];
-            } elseif(isset($config['alias']) && array_key_exists($config['alias'], $record)) {
-                $data[$name] = $record[$config['alias']];
-            }
-        }
-
-        if($filteredRecord = $this->filter($data)) {
-            $id = $filteredRecord[$this->getIdFieldName()];
-            $this->data[$id] = $filteredRecord;
-            
-            return $filteredRecord;
-        }
-        
-        return false;
-    }
+    abstract protected function insert(\Closure $callback = null);
     
     /**
      * @return bool
      */
-    abstract protected function insert();
+    abstract protected function update(\Closure $callback = null);
     
     /**
      * @return bool
      */
-    abstract protected function update();
-    
-    /**
-     * @return bool
-     */
-    abstract protected function insertAndUpdate();
+    abstract protected function insertAndUpdate(\Closure $callback = null);
 }

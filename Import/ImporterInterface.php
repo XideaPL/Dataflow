@@ -49,9 +49,9 @@ interface ImporterInterface
     
     /**
      * @param ImportInterface $import
-     * @param \Closure|null $readCallback
+     * @param \Closure|null $callback
      * 
      * @return bool
      */
-    function process(ImportInterface $import, \Closure $readCallback = null);
+    function process(ImportInterface $import, \Closure $callback = null);
 }

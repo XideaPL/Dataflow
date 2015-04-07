@@ -76,7 +76,7 @@ abstract class AbstractExporter implements ExporterInterface
     /**
      * @inheritDoc
      */
-    public function process(ExportInterface $export, \Closure $writeCallback = null)
+    public function process(ExportInterface $export, \Closure $callback = null)
     {
         $writer = $this->getWriter($export->getWriterType());
         $service = $this->getService($export->getContext());
@@ -91,12 +91,21 @@ abstract class AbstractExporter implements ExporterInterface
             
             $writer->open($filePath, $export->getWriter());
 
-            $service->setExport($export);
-            $result = $service->export($writer, $writeCallback);
+            $service->configure([], $export->getFields());
+            
+            $data = $service->export();
+
+            $writer->write($service->getWriterFields());
+            foreach($data as $record) {
+                $writer->write($record);
+                if(is_callable($callback)) {
+                    $callback($record, $service);
+                }
+            }
             
             $writer->close();
             
-            return $result;
+            return true;
         }
         
         return false;
