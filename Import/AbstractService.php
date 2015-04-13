@@ -119,7 +119,10 @@ abstract class AbstractService implements ServiceInterface
     {
         $record = $this->convert($record);
         if($filteredRecord = $this->filter($record)) {
-            $this->data[] = $filteredRecord;
+            $id = isset($filteredRecord[$this->getIdFieldName()]) ? $filteredRecord[$this->getIdFieldName()] : null;
+            if($id) {
+                $this->data[$id] = $filteredRecord;
+            }
         }
     }
     
@@ -136,17 +139,12 @@ abstract class AbstractService implements ServiceInterface
      */
     public function convert(array $record)
     {
-        $idField = $this->getIdFieldName();
-        
         $result = [];
-        foreach($data as $record) {
-            foreach($this->fields as $name => $config) {
-                $id = isset($config[$idField]) ? $config[$idField] : $name;
-                if(array_key_exists($name, $record)) {
-                    $result[$id] = $record[$name];
-                } elseif(isset($config['alias']) && array_key_exists($config['alias'], $record)) {
-                    $result[$id] = $record[$config['alias']];
-                }
+        foreach($this->fields as $name => $config) {
+            if(array_key_exists($name, $record)) {
+                $result[$name] = $record[$name];
+            } elseif(isset($config['alias']) && array_key_exists($config['alias'], $record)) {
+                $result[$name] = $record[$config['alias']];
             }
         }
         
