@@ -13,23 +13,23 @@ namespace Xidea\Component\Dataflow\Reader;
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
  */
 interface ReaderInterface
-{
-    /*
-     * @param array $options
+{   
+    /**
+     * @return array
      */
-    function configureOptions(array $options = []);
+    function getReaderFields();
     
     /**
-     * @param string $resource
+     * @param array $options
      * 
      * @return bool
      */
-    function open($resource, array $options = []);
+    function prepare(array $options = []);
     
     /**
-     * @return bool
+     * @return array
      */
-    function read(array $fields = []);
+    function read();
     
     /**
      * @return bool

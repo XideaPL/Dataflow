@@ -9,22 +9,15 @@
 
 namespace Xidea\Component\Dataflow\Reader;
 
-use Xidea\Component\Dataflow\Reader\ReaderInterface;
-
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
  */
-class XmlReader implements ReaderInterface
+class XmlReader extends AbstractReader
 {
     /*
      * @var \XmlReader
      */
     protected $reader;
-    
-    /*
-     * @var array
-     */
-    protected $options;
 
     /*
      * 
@@ -32,46 +25,45 @@ class XmlReader implements ReaderInterface
     public function __construct()
     {
         $this->reader = new \XMLReader();
+        
+        $this->options = [
+           'node' => 'product'
+        ];
     }
     
     /**
      * @inheritDoc
      */
-    public function configureOptions(array $options = [])
+    public function prepare($fields, array $options = [])
     {
-        $this->options = array_merge([
-           'node' => 'product'
-        ], $options);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function open($resource, array $options = [])
-    {
-        $this->configureOptions($options);
+        parent::prepare($fields, $options);
         
-        return $this->reader->open($resource);
+        if(isset($this->options['file']) && $this->options['file']) {
+            return $this->reader->open($this->options['file']);
+        }
+        
+        return false;
     }
 
     /**
      * @inheritDoc
      */
-    public function read(array $fields = [])
+    public function read()
     {
         $reader = $this->reader;
         $node = $this->options['node'];
         
         $result = [];
         $read = true;
+        $fields = $this->getReaderFields();
         while ($read && $reader->read()) {
             if ($reader->nodeType == \XMLReader::ELEMENT &&
                     $reader->name == $node) {
                 $result = [];
             }
 
-            if ($reader->nodeType == \XMLReader::ELEMENT && in_array($reader->name, $fields)) {
-                $name = $reader->name;
+            if ($reader->nodeType == \XMLReader::ELEMENT && array_key_exists($reader->name, $fields)) {
+                $name = $fields[$reader->name];
             }
 
             if (isset($name) && $name && ($reader->nodeType == \XMLReader::TEXT ||

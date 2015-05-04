@@ -9,12 +9,12 @@
 
 namespace Xidea\Component\Dataflow\Builder;
 
-use Xidea\Component\Dataflow\Factory\ProfileFactoryInterface;
+use Xidea\Component\Base\Factory\ObjectFactoryInterface;
 
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
  */
-abstract class AbstractProfileBuilder implements ProfileBuilderInterface
+class ProfileBuilder implements ProfileBuilderInterface
 {
     /**
      * Currently built profile.
@@ -26,14 +26,14 @@ abstract class AbstractProfileBuilder implements ProfileBuilderInterface
     /**
      * Profile factory.
      *
-     * @var ProfileFactoryInterface
+     * @var ObjectFactoryInterface
      */
     protected $factory;
 
     /*
      * 
      */
-    public function __construct(ProfileFactoryInterface $profileFactory)
+    public function __construct(ObjectFactoryInterface $profileFactory)
     {
         $this->factory = $profileFactory;
     }
@@ -65,9 +65,25 @@ abstract class AbstractProfileBuilder implements ProfileBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function setFile(array $file)
+    public function setFields(array $fields)
     {
-        $this->profile->setFile($file);
+        $this->profile->setFields($fields);
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function setReader(array $reader)
+    {
+        $this->profile->setReader($reader);
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function setWriter(array $writer)
+    {
+        $this->profile->setWriter($writer);
     }
 
     /**

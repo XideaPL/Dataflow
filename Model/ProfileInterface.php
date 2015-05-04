@@ -14,6 +14,10 @@ namespace Xidea\Component\Dataflow\Model;
  */
 interface ProfileInterface
 {
+    const BEHAVIOR_INSERT = 'insert';
+    const BEHAVIOR_UPDATE = 'update';
+    const BEHAVIOR_INSERT_UPDATE = 'insert_update';
+    
     /**
      * Returns the dataflow id.
      * 
@@ -50,18 +54,67 @@ interface ProfileInterface
     function getContext();
     
     /**
-     * Sets the file.
+     * Sets the behavior.
      * 
-     * @param array $file
+     * @param string $behavior
      */
-    function setFile($file);
+    function setBehavior($behavior);
 
     /**
-     * Returns the file.
+     * Returns the behavior.
+     *
+     * @return string
+     */
+    function getBehavior();
+    
+    /**
+     * Sets the reader.
+     * 
+     * @param array $reader
+     */
+    function setReader($reader);
+
+    /**
+     * Returns the reader.
      *
      * @return array
      */
-    function getFile();
+    function getReader();
+    
+    /**
+     * Sets the writer.
+     * 
+     * @param array $writer
+     */
+    function setWriter($writer);
+
+    /**
+     * Returns the writer.
+     *
+     * @return array
+     */
+    function getWriter();
+    
+    /**
+     * Sets the fields.
+     * 
+     * @param array $fields
+     */
+    function setFields(array $fields);
+
+    /**
+     * Returns the fields.
+     *
+     * @return array
+     */
+    function getFields();
+    
+    /**
+     * Returns the id field
+     * 
+     * @return array The field
+     */
+    function getFieldWithId();
     
     /**
      * Sets the options.
@@ -94,11 +147,4 @@ interface ProfileInterface
      * @return mixed
      */
     function getOption($name, $default = null);
-    
-    /**
-     * Returns the file path.
-     *
-     * @return string
-     */
-    function getFilePath();
 }

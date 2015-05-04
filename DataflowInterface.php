@@ -7,30 +7,43 @@
  * file that was distributed with this source code.
  */
 
-namespace Xidea\Component\Dataflow\Export;
+namespace Xidea\Component\Dataflow;
 
-use Xidea\Component\Dataflow\Model\ExportInterface,
+use Xidea\Component\Dataflow\Model\ProfileInterface,
+    Xidea\Component\Dataflow\Reader\ReaderInterface,
     Xidea\Component\Dataflow\Writer\WriterInterface;
 
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
  */
-interface ExporterInterface
-{
+interface DataflowInterface
+{  
     /**
-     * @param string $context
-     * @param ServiceInterface $service
+     * @param ProfileInterface $profile
      */
-    function addService($context, ServiceInterface $service);
+    function setProfile(ProfileInterface $profile);
+    
+    /**
+     * Returns the profile.
+
+     * @return ProfileInterface|null The profile
+     */
+    function getProfile();
+    
+    /**
+     * @param string $type
+     * @param ReaderInterface $reader
+     */
+    function addReader($type, ReaderInterface $reader);
 
     /**
-     * Returns the service.
+     * Returns the reader.
      *
-     * @param string $context
+     * @param string $type
      * 
-     * @return ServiceInterface|null The service
+     * @return ReaderInterface|null The reader
      */
-    function getService($context);
+    function getReader($type);
     
     /**
      * @param string $type
@@ -48,10 +61,9 @@ interface ExporterInterface
     function getWriter($type);
     
     /**
-     * @param ExportInterface $export
      * @param \Closure|null $callback
      * 
      * @return bool
      */
-    function process(ExportInterface $export, \Closure $callback = null);
+    function process(\Closure $callback = null);
 }

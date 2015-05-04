@@ -32,6 +32,11 @@ abstract class AbstractProfile implements ProfileInterface
     /*
      * @var array
      */
+    protected $fields = array();
+    
+    /*
+     * @var array
+     */
     protected $options;
     
     /**
@@ -77,17 +82,76 @@ abstract class AbstractProfile implements ProfileInterface
     /**
      * @inheritDoc
      */
-    public function setFile($file)
+    public function setBehavior($behavior)
     {
-        $this->setOption('file', $file);
+        $this->setOption('behavior', $behavior);
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    public function getBehavior()
+    {
+        return $this->getOption('behavior');
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    public function setReader($reader)
+    {
+        $this->setOption('reader', $reader);
     }
 
     /**
      * @inheritDoc
      */
-    public function getFile()
+    public function getReader()
     {
-        return $this->getOption('file');
+        return $this->getOption('reader');
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    public function setWriter($writer)
+    {
+        $this->setOption('writer', $writer);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getWriter()
+    {
+        return $this->getOption('writer');
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    public function setFields(array $fields)
+    {
+        $this->fields = $fields;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getFields()
+    {
+        return $this->fields;
+    }
+    
+    public function getFieldWithId()
+    {
+        foreach($this->getFields() as $name => $field) {
+            if(isset($field['id']) && $field['id']) {
+                return array($name, $field);
+            }
+        }
+        
+        return array();
     }
     
     /**

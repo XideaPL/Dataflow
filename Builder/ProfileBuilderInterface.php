@@ -32,7 +32,17 @@ interface ProfileBuilderInterface
     /**
      * @param array
      */
-    function setFile(array $file);
+    function setReader(array $reader);
+    
+    /**
+     * @param array
+     */
+    function setWriter(array $writer);
+    
+    /**
+     * @param array
+     */
+    function setFields(array $fields);
     
     /**
      * @return \Xidea\Component\Dataflow\Model\ProfileInterface

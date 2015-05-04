@@ -14,22 +14,18 @@ namespace Xidea\Component\Dataflow\Writer;
  */
 interface WriterInterface
 {
-    /*
-     * @param array $options
-     */
-    function configureOptions(array $options = []);
-    
     /**
-     * @param string $resource
+     * @param array $fields
+     * @param array $options
      * 
      * @return bool
      */
-    function open($resource, array $options = []);
+    function prepare($fields, array $options = []);
     
     /**
      * @return bool
      */
-    function write(array $fields = []);
+    function write($item);
     
     /**
      * @param bool
