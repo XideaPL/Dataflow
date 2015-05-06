@@ -9,8 +9,7 @@
 
 namespace Xidea\Component\Dataflow\Writer;
 
-use Xidea\Component\Dataflow\Writer\WriterInterface,
-    Xidea\Component\Dataflow\ConfigurationInterface;
+use Xidea\Component\Dataflow\ConfigurationInterface;
 
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>

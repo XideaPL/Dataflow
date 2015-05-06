@@ -82,22 +82,6 @@ abstract class AbstractProfile implements ProfileInterface
     /**
      * @inheritDoc
      */
-    public function setBehavior($behavior)
-    {
-        $this->setOption('behavior', $behavior);
-    }
-    
-    /**
-     * @inheritDoc
-     */
-    public function getBehavior()
-    {
-        return $this->getOption('behavior');
-    }
-    
-    /**
-     * @inheritDoc
-     */
     public function setReader($reader)
     {
         $this->setOption('reader', $reader);
@@ -143,6 +127,9 @@ abstract class AbstractProfile implements ProfileInterface
         return $this->fields;
     }
     
+    /**
+     * @inheritDoc
+     */
     public function getFieldWithId()
     {
         foreach($this->getFields() as $name => $field) {
