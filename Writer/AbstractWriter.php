@@ -30,7 +30,7 @@ abstract class AbstractWriter implements WriterInterface
     /*
      * @var array
      */
-    protected $options;
+    protected $options = array();
     
     /**
      * 

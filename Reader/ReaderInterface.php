@@ -24,7 +24,7 @@ interface ReaderInterface
      * 
      * @return bool
      */
-    function prepare(array $options = []);
+    function prepare($fields, array $options = []);
     
     /**
      * @return array

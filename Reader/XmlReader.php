@@ -9,6 +9,8 @@
 
 namespace Xidea\Component\Dataflow\Reader;
 
+use Xidea\Component\Dataflow\ConfigurationInterface;
+
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
  */
@@ -22,8 +24,10 @@ class XmlReader extends AbstractReader
     /*
      * 
      */
-    public function __construct()
+    public function __construct(ConfigurationInterface $configuration)
     {
+        parent::__construct($configuration);
+        
         $this->reader = new \XMLReader();
         
         $this->options = [
@@ -39,7 +43,7 @@ class XmlReader extends AbstractReader
         parent::prepare($fields, $options);
         
         if(isset($this->options['file']) && $this->options['file']) {
-            return $this->reader->open($this->options['file']);
+            return $this->reader->open($this->configuration->getFilePath($this->options['file']));
         }
         
         return false;

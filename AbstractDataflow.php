@@ -108,23 +108,24 @@ abstract class AbstractDataflow implements DataflowInterface
         
         try {
             $fields = $profile->getFields();
+
             $reader->prepare($fields, $readerOptions);
             $writer->prepare($fields, $writerOptions);
 
-            $count = 0;
-            while($row = $reader->read()) {
+            $counter = 1;
+            while($item = $reader->read()) {
                 $item = $this->filter($this->convert($item));
                 $writer->write($item);
                 
                 if(is_callable($callback)) {
-                    call_user_func_array($callback, array($count, $item));
+                    call_user_func_array($callback, array($counter, $item));
                 }
                 
-                $count++;
+                $counter++;
             }
             
-            $reader->close();            
             $writer->close();
+            $reader->close();
             
             return true;
         } catch (Exception $e) {
@@ -143,6 +144,12 @@ abstract class AbstractDataflow implements DataflowInterface
         
         if(!$profile instanceof ProfileInterface) {
             throw new \LogicException();
+        }
+        
+        foreach($item as &$value) {
+            if($value instanceof \DateTime) {
+                $value = $value->format('Y-m-d H:i');
+            }
         }
         
         return $item;
