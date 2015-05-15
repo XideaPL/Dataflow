@@ -54,20 +54,6 @@ interface ProfileInterface
     function getContext();
     
     /**
-     * Sets the behavior.
-     * 
-     * @param string $behavior
-     */
-    function setBehavior($behavior);
-
-    /**
-     * Returns the behavior.
-     *
-     * @return string
-     */
-    function getBehavior();
-    
-    /**
      * Sets the reader.
      * 
      * @param array $reader
