@@ -40,6 +40,8 @@ abstract class DoctrineWriter extends AbstractWriter
         parent::__construct($configuration);
         
         $this->entityManager = $entityManager;
+        
+        $this->entityManager->setFlushMode(false);
     }
     
     /**

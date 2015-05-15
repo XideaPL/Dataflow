@@ -9,7 +9,7 @@
 
 namespace Xidea\Component\Dataflow\Builder;
 
-use Xidea\Component\Base\Factory\ObjectFactoryInterface;
+use Xidea\Component\Base\Factory\ModelFactoryInterface;
 
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
@@ -26,14 +26,14 @@ class ProfileBuilder implements ProfileBuilderInterface
     /**
      * Profile factory.
      *
-     * @var ObjectFactoryInterface
+     * @var ModelFactoryInterface
      */
     protected $factory;
 
     /*
      * 
      */
-    public function __construct(ObjectFactoryInterface $profileFactory)
+    public function __construct(ModelFactoryInterface $profileFactory)
     {
         $this->factory = $profileFactory;
     }
