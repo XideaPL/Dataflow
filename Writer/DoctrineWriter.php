@@ -46,6 +46,24 @@ abstract class DoctrineWriter extends AbstractWriter
     }
     
     /**
+     * @param int $batchSize
+     */
+    public function setBatchSize($batchSize)
+    {
+        if(is_int($batchSize)) {
+            $this->batchSize = $batchSize;
+        }
+    }
+    
+    /**
+     * @return int
+     */
+    public function getBatchSize()
+    {
+        return $this->batchSize;
+    }
+    
+    /**
      * @return object
      */
     abstract protected function createEntity();
@@ -59,12 +77,14 @@ abstract class DoctrineWriter extends AbstractWriter
         $item = $this->convert($item);
         
         $entity = $this->loadOrCreateEntity($item);
-        $this->updateEntity($item, $entity);
-        $this->saveEntity($entity);
-        
-        if(($this->counter % $this->batchSize) === 0) {
-            $this->entityManager->flush();
-            $this->entityManager->clear();
+        if(is_object($entity)) {
+            $this->updateEntity($item, $entity);
+            $this->saveEntity($entity);
+
+            if(($this->counter % $this->batchSize) === 0) {
+                $this->entityManager->flush();
+                $this->entityManager->clear();
+            }
         }
     }
     
