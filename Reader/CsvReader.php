@@ -21,6 +21,16 @@ class CsvReader extends AbstractReader
      */
     protected $reader;
     
+    /*
+     * @var array
+     */
+    protected $headers = array();
+    
+    /*
+     * @var int
+     */
+    protected $headersCount = 0;
+    
     /**
      * 
      */
@@ -30,7 +40,8 @@ class CsvReader extends AbstractReader
         
         $this->options = [
             'delimiter' => ',',
-            'enclosure' => '"'
+            'enclosure' => '"',
+            'headers' => true
         ];
     }
 
@@ -45,6 +56,13 @@ class CsvReader extends AbstractReader
             $file = $this->configuration->getFilePath($this->options['file']);
             $this->reader = new \SplFileObject($file, 'r');
             
+            if($this->options['headers']) {
+                $this->reader->rewind();
+                $this->headers = $this->reader->fgetcsv($this->options['delimiter'], $this->options['enclosure']);
+                $this->headersCount = count($this->headers);
+                $this->reader->next();
+            }
+            
             return true;
         }
         
@@ -56,7 +74,16 @@ class CsvReader extends AbstractReader
      */
     public function read()
     {
-        return $this->reader->fgetcsv($this->options['delimiter'], $this->options['enclosure']);
+        $result = $data = $this->reader->fgetcsv($this->options['delimiter'], $this->options['enclosure']);
+
+        if($this->headersCount) {
+            $result = [];
+            for($i = 0; $i < $this->headersCount; $i++) {
+                $result[$this->headers[$i]] = $data[$i];
+            }
+        }
+        
+        return $result;
     }
     
     /**
