@@ -7,14 +7,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Xidea\Component\Dataflow\Manager;
+namespace Xidea\Dataflow\Profile;
 
-use Xidea\Component\Dataflow\Model\ProfileInterface;
+use Xidea\Dataflow\ProfileInterface;
 
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
  */
-interface ProfileManagerInterface
+interface ManagerInterface
 {
     /**
      * Saves a profile.

@@ -7,21 +7,21 @@
  * file that was distributed with this source code.
  */
 
-namespace Xidea\Component\Dataflow\Loader;
+namespace Xidea\Dataflow\Profile;
 
 use Xidea\Component\Base\Loader\ModelLoaderInterface;
 
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
  */
-interface ProfileLoaderInterface extends ModelLoaderInterface
+interface LoaderInterface extends ModelLoaderInterface
 {
     /**
      * Returns a profile by id.
      * 
      * @param int $id
      * 
-     * @return \Xidea\Component\Dataflow\Model\ProfileInterface
+     * @return \Xidea\Dataflow\ProfileInterface
      */
     function load($id);
 }

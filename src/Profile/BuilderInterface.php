@@ -7,12 +7,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Xidea\Component\Dataflow\Builder;
+namespace Xidea\Dataflow\Profile;
 
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
  */
-interface ProfileBuilderInterface
+interface BuilderInterface
 {
     /**
      * @return void
@@ -23,21 +23,16 @@ interface ProfileBuilderInterface
      * @param string
      */
     function setName($name);
-    
+
     /**
-     * @param string
+     * @param array
      */
-    function setContext($context);
+    function setSource(array $source);
     
     /**
      * @param array
      */
-    function setReader(array $reader);
-    
-    /**
-     * @param array
-     */
-    function setWriter(array $writer);
+    function setTarget(array $target);
     
     /**
      * @param array
@@ -45,7 +40,7 @@ interface ProfileBuilderInterface
     function setFields(array $fields);
     
     /**
-     * @return \Xidea\Component\Dataflow\Model\ProfileInterface
+     * @return \Xidea\Dataflow\ProfileInterface
      */
     function getProfile();
 }

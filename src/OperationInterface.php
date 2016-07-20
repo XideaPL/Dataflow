@@ -7,20 +7,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Xidea\Component\Dataflow;
+namespace Xidea\Dataflow;
 
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
  */
-interface ConfigurationInterface
+interface OperationInterface
 {
     /**
-     * @return string
+     * @return ResourceInterface
      */
-    public function getBasePath();
-    
-    /**
-     * @return string
-     */
-    public function getFilePath($filePath);
+    function process();
 }

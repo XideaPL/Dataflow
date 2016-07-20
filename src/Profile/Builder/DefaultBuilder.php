@@ -7,19 +7,20 @@
  * file that was distributed with this source code.
  */
 
-namespace Xidea\Component\Dataflow\Builder;
+namespace Xidea\Dataflow\Profile\Builder;
 
+use Xidea\Dataflow\Profile\BuilderInterface;
 use Xidea\Component\Base\Factory\ModelFactoryInterface;
 
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
  */
-class ProfileBuilder implements ProfileBuilderInterface
+class DefaultBuilder implements BuilderInterface
 {
     /**
      * Currently built profile.
      *
-     * @var \Xidea\Component\Dataflow\Model\ProfileInterface
+     * @var \Xidea\Dataflow\ProfileInterface
      */
     protected $profile;
 
@@ -33,9 +34,9 @@ class ProfileBuilder implements ProfileBuilderInterface
     /*
      * 
      */
-    public function __construct(ModelFactoryInterface $profileFactory)
+    public function __construct(ModelFactoryInterface $factory)
     {
-        $this->factory = $profileFactory;
+        $this->factory = $factory;
     }
 
     /**
@@ -57,14 +58,6 @@ class ProfileBuilder implements ProfileBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function setContext($context)
-    {
-        $this->profile->setContext($context);
-    }
-    
-    /**
-     * {@inheritdoc}
-     */
     public function setFields(array $fields)
     {
         $this->profile->setFields($fields);
@@ -73,17 +66,17 @@ class ProfileBuilder implements ProfileBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function setReader(array $reader)
+    public function setSource(array $source)
     {
-        $this->profile->setReader($reader);
+        $this->profile->setSource($source);
     }
     
     /**
      * {@inheritdoc}
      */
-    public function setWriter(array $writer)
+    public function setTarget(array $target)
     {
-        $this->profile->setWriter($writer);
+        $this->profile->setTarget($target);
     }
 
     /**

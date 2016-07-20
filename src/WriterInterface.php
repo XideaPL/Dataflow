@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Xidea\Component\Dataflow\Writer;
+namespace Xidea\Dataflow;
 
 /**
  * @author Artur Pszczółka <a.pszczolka@xidea.pl>
@@ -15,17 +15,11 @@ namespace Xidea\Component\Dataflow\Writer;
 interface WriterInterface
 {
     /**
-     * @param array $fields
-     * @param array $options
+     * @param array
      * 
      * @return bool
      */
-    function prepare($fields, array $options = []);
-    
-    /**
-     * @return bool
-     */
-    function write($item);
+    function write($data);
     
     /**
      * @param bool
